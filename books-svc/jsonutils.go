@@ -53,10 +53,6 @@ func DecodePutBookRequest(_ context.Context, r *http.Request) (interface{}, erro
 func DecodeDeleteBookRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var request DeleteBookRequest
 
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		return nil, err
-	}
-
 	id, ok := mux.Vars(r)["id"]
 	if !ok {
 		return nil, errors.New("bad route")

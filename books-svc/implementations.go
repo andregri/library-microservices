@@ -29,12 +29,13 @@ func (svc BookServiceInstance) GetBook(ctx context.Context, id int) (Book, error
 
 // PutBook
 func (svc BookServiceInstance) PutBook(ctx context.Context, id int, b Book) error {
+	b.ID = id
 	res := svc.Db.Save(&b)
 	return res.Error
 }
 
 // DeleteBook
 func (svc BookServiceInstance) DeleteBook(ctx context.Context, id int) error {
-	res := svc.Db.Delete(id)
+	res := svc.Db.Delete(&Book{}, id)
 	return res.Error
 }

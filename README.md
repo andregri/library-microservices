@@ -29,6 +29,7 @@ Inside PostgreSQL container:
 su postgres
 psql
 create database library_db;
+\c library_db
 ```
 
 ### Run microservices
@@ -59,9 +60,28 @@ curl -XGET localhost:8080/book/1
 {"book":{"id":1,"title":"Atomic Habits","author":"Geronimo Stilton","average_rating":4.5,"isbn":"","isbn13":"","language_code":"","num_pages":0,"ratings_count":0,"text_reviews_count":0,"publication_date":"0001-01-01T00:49:56+00:49","publisher":""},"error":null}
 ```
 
+PUT
+```
+curl -XPUT localhost:8080/book/1 \
+    -d '{
+            "book":{
+                "title":"Formaggio",
+                "author":"Geronimo Stilton",
+                "average_rating":4.5
+            }
+    }'
+```
+
+DELETE
+```
+curl -XDELETE localhost:8080/book/1
+```
+
 ## To Do
 
-- [ ] Fix http mux in main.go
+- [x] Fix http mux in main.go
+- [ ] Response must contain a field "success"
+- [ ] Add logging middleware
 - [ ] Add tests for book service
 - [ ] Move all to containers
 
