@@ -7,8 +7,7 @@ type PostBookRequest struct {
 
 // PostBookResponse is a RPC response message to the post request
 type PostBookResponse struct {
-	ID    int    `json:"id"`
-	Error string `json:"error"`
+	ID int `json:"id"`
 }
 
 // GetBookRequest is the rpc request message to get a book by id
@@ -18,8 +17,7 @@ type GetBookRequest struct {
 
 // GetBookResponse is the rpc response of the get request
 type GetBookResponse struct {
-	Book  Book   `json:"book"`
-	Error string `json:"error"`
+	Book Book `json:"book"`
 }
 
 // PutBookRequest is the rpc request to update an existing book
@@ -28,17 +26,12 @@ type PutBookRequest struct {
 	Book Book `json:"book"`
 }
 
-// PutBookResponse is the rpc response of the put request
-type PutBookResponse struct {
-	Error string `json:"error"`
-}
-
 // DeleteBookRequest is the rpc request to delete a book record
 type DeleteBookRequest struct {
 	ID int `json:"id"`
 }
 
-// DeleteBookResponse is the rpc response to the delete request
-type DeleteBookResponse struct {
+// ErrorResponse is sent when the endpoint could not complete the request
+type ErrorResponse struct {
 	Error string `json:"error"`
 }

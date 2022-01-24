@@ -36,7 +36,10 @@ func MakePostBookEndpoint(svc BooksService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(PostBookRequest)
 		id, err := svc.PostBook(ctx, req.Book)
-		return PostBookResponse{ID: id, Error: err.Error()}, nil
+		if err != nil {
+			return ErrorResponse{Error: err.Error()}, nil
+		}
+		return PostBookResponse{ID: id}, nil
 	}
 }
 
@@ -45,7 +48,10 @@ func MakeGetBookENdpoint(svc BooksService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetBookRequest)
 		book, err := svc.GetBook(ctx, req.ID)
-		return GetBookResponse{Book: book, Error: err.Error()}, nil
+		if err != nil {
+			return ErrorResponse{Error: err.Error()}, nil
+		}
+		return GetBookResponse{Book: book}, nil
 	}
 }
 
@@ -54,7 +60,10 @@ func MakePutBookEndpoint(svc BooksService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(PutBookRequest)
 		err := svc.PutBook(ctx, req.ID, req.Book)
-		return PutBookResponse{Error: err.Error()}, nil
+		if err != nil {
+			return ErrorResponse{Error: err.Error()}, nil
+		}
+		return nil, nil
 	}
 }
 
@@ -63,6 +72,9 @@ func MakeDeleteBookENdpoint(svc BooksService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(DeleteBookRequest)
 		err := svc.DeleteBook(ctx, req.ID)
-		return DeleteBookResponse{Error: err.Error()}, nil
+		if err != nil {
+			return ErrorResponse{Error: err.Error()}, nil
+		}
+		return nil, nil
 	}
 }
