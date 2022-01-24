@@ -22,5 +22,8 @@ func main() {
 		Db: db,
 	}
 
-	log.Fatal(http.ListenAndServe(":8080", bookssvc.MakeHandler(bookSvc)))
+	bookHandler := bookssvc.MakeHandler(bookSvc)
+
+	http.Handle("/", bookHandler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
