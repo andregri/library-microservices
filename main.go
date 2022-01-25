@@ -1,10 +1,11 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"os"
 
 	bookssvc "github.com/andregri/library-microservices/books-svc"
+	"github.com/go-kit/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -22,8 +23,10 @@ func main() {
 		Db: db,
 	}
 
-	bookHandler := bookssvc.MakeHandler(bookSvc)
+	logger := log.NewLogfmtLogger(os.Stderr)
+
+	bookHandler := bookssvc.MakeHandler(bookSvc, logger)
 
 	http.Handle("/", bookHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	logger.Log(http.ListenAndServe(":8080", nil))
 }

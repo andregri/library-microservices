@@ -2,8 +2,13 @@ package bookssvc
 
 import (
 	"context"
+	"errors"
 
 	"gorm.io/gorm"
+)
+
+var (
+	InvalidBook = errors.New("Invalid Book")
 )
 
 // BookServiceInstance implements the BookService interface

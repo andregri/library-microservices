@@ -3,33 +3,45 @@ package bookssvc
 import (
 	"net/http"
 
+	"github.com/go-kit/log"
+
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 )
 
-func MakeHandler(svc BooksService) http.Handler {
+func MakeHandler(svc BooksService, logger log.Logger) http.Handler {
+
+	options := []httptransport.ServerOption{
+		httptransport.ServerErrorLogger(logger),
+		httptransport.ServerErrorEncoder(EncodeErrorResponse),
+	}
+
 	postBookHandler := httptransport.NewServer(
 		MakePostBookEndpoint(svc),
 		DecodePostBookRequest,
 		EncodeBookResponse,
+		options...,
 	)
 
 	getBookHandler := httptransport.NewServer(
 		MakeGetBookENdpoint(svc),
 		DecodeGetBookRequest,
 		EncodeBookResponse,
+		options...,
 	)
 
 	putBookHandler := httptransport.NewServer(
 		MakePutBookEndpoint(svc),
 		DecodePutBookRequest,
 		EncodeBookResponse,
+		options...,
 	)
 
 	deleteBookHandler := httptransport.NewServer(
 		MakeDeleteBookENdpoint(svc),
 		DecodeDeleteBookRequest,
 		EncodeBookResponse,
+		options...,
 	)
 
 	r := mux.NewRouter()
