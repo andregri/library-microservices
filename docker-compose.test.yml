@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   library-app:
-    image: andregri/library-app
     build: 
       context: .
+      target: test
     environment:
       POSTGRES_USER: andrea
       POSTGRES_PASSWORD: password

@@ -90,13 +90,19 @@ docker-compose -f docker-compose.test.yml up
 docker-compose -f docker-compose.test.yml down
 ```
 
+For testing:
+```
+sudo docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
+sudo docker-compose -f docker-compose.test.yml down
+```
+
 ## To Do
 
 - [x] Fix http mux in main.go
 - [ ] Response must contain a field "success"
 - [ ] Add logging middleware
 - [ ] Add tests for book service
-- [ ] Move all to containers
+- [x] Move all to containers
 
 ## What I learned
 

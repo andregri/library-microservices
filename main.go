@@ -12,6 +12,21 @@ import (
 )
 
 func main() {
+	db := initDb()
+
+	bookSvc := bookssvc.BookServiceInstance{
+		Db: db,
+	}
+
+	logger := log.NewLogfmtLogger(os.Stderr)
+
+	bookHandler := bookssvc.MakeHandler(bookSvc, logger)
+
+	http.Handle("/", bookHandler)
+	logger.Log(http.ListenAndServe(":8080", nil))
+}
+
+func initDb() *gorm.DB {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable",
 		os.Getenv("POSTGRES_HOST"),
@@ -26,14 +41,5 @@ func main() {
 
 	db.AutoMigrate(&bookssvc.Book{})
 
-	bookSvc := bookssvc.BookServiceInstance{
-		Db: db,
-	}
-
-	logger := log.NewLogfmtLogger(os.Stderr)
-
-	bookHandler := bookssvc.MakeHandler(bookSvc, logger)
-
-	http.Handle("/", bookHandler)
-	logger.Log(http.ListenAndServe(":8080", nil))
+	return db
 }
