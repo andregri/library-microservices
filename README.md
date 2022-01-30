@@ -77,6 +77,19 @@ DELETE
 curl -XDELETE localhost:8080/book/1
 ```
 
+### Docker
+```
+docker build --tag library-app .
+docker run --rm -it -p 8080:8080 --name my-library-app library-app
+```
+
+### docker-compose
+```
+docker-compose -f docker-compose.test.yml build
+docker-compose -f docker-compose.test.yml up
+docker-compose -f docker-compose.test.yml down
+```
+
 ## To Do
 
 - [x] Fix http mux in main.go

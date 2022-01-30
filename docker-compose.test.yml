@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  library-app:
+    image: andregri/library-app
+    build: 
+      context: .
+    environment:
+      POSTGRES_USER: andrea
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      POSTGRES_HOST: library-db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - library-db
+    networks:
+      - library-network
+
+  library-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: andrea
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    networks:
+      - library-network
+    volumes:
+      - library-volume
+
+networks:
+  library-network: {}
+
+volumes:
+  library-volume: {}
