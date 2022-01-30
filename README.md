@@ -114,3 +114,11 @@ sudo make test
 - if I return an error different from `nil` in functions like `Make...Endpoint()`,
   then the `DecodeResponse` function is not called. Thus, I return a `nil` error
   and the response struct is filled with the error string.
+
+- multistage builds in Docker to reduce the number of identical layers.
+  Using interediate target layers.
+
+- testting.M in Go is used to wrap tests. It can be used to create resources
+  before running the tests, close the resources after them.
+
+- makefile to better organize commands.
