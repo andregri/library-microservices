@@ -95,6 +95,10 @@ For testing:
 sudo docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 sudo docker-compose -f docker-compose.test.yml down
 ```
+or:
+```
+sudo make test 
+```
 
 ## To Do
 

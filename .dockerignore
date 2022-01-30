@@ -1,5 +1,6 @@
 .git
 README.md
 LICENSE.md
+Makefile
 Dockerfile
 docker-compose.test.yml
