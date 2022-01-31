@@ -7,26 +7,25 @@ import (
 
 	bookssvc "github.com/andregri/library-microservices/books-svc"
 	"github.com/go-kit/log"
+	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func main() {
-	db := initDb()
-
-	bookSvc := bookssvc.BookServiceInstance{
-		Db: db,
-	}
-
-	logger := log.NewLogfmtLogger(os.Stderr)
-
-	bookHandler := bookssvc.MakeHandler(bookSvc, logger)
-
-	http.Handle("/", bookHandler)
-	logger.Log(http.ListenAndServe(":8080", nil))
+type App struct {
+	Db     *gorm.DB
+	Router *mux.Router
+	Logger log.Logger
 }
 
-func initDb() *gorm.DB {
+func main() {
+	app := App{}
+	app.Initialize()
+	app.Run()
+}
+
+func (a *App) Initialize() {
+
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable",
 		os.Getenv("POSTGRES_HOST"),
@@ -34,12 +33,25 @@ func initDb() *gorm.DB {
 		os.Getenv("POSTGRES_PASSWORD"),
 		os.Getenv("POSTGRES_DB"),
 	)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	var err error
+	a.Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 
-	db.AutoMigrate(&bookssvc.Book{})
+	a.Db.AutoMigrate(&bookssvc.Book{})
 
-	return db
+	bookSvc := bookssvc.BookServiceInstance{
+		Db: a.Db,
+	}
+
+	a.Router = mux.NewRouter()
+	a.Logger = log.NewLogfmtLogger(os.Stderr)
+
+	a.Router.Handle("/", bookssvc.MakeHandler(bookSvc, a.Logger))
+}
+
+func (a *App) Run() {
+	a.Logger.Log(http.ListenAndServe(":8080", a.Router))
 }

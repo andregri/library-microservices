@@ -107,6 +107,7 @@ sudo make test
 - [ ] Add logging middleware
 - [ ] Add tests for book service
 - [x] Move all to containers
+- [ ] Add make command to deploy a local postgres for debugging
 
 ## What I learned
 
@@ -122,3 +123,5 @@ sudo make test
   before running the tests, close the resources after them.
 
 - makefile to better organize commands.
+
+- use pointer struct methods when you want to modify struct members
